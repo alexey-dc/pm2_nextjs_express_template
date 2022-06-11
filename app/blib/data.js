@@ -1,6 +1,16 @@
-class InMemoryStore {
+class IntegerMemoryStore {
   constructor() {
+    this._value = null
+  }
+
+  async init() {
+    /* a real-world application would initialize its database connection here */ 
     this._value = 3
+  }
+
+  async cleanup() {
+    /* a real-world application may tear down its database connection here */
+    this._value = null
   }
 
   incr() {
@@ -25,4 +35,4 @@ class InMemoryStore {
 
 }
 
-module.exports = new InMemoryStore()
+module.exports = new IntegerMemoryStore()

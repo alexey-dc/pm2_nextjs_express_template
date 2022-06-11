@@ -18,7 +18,7 @@ class Middleware {
   initErrors() {
     this.express.use(async (err, req, res, next) => {
       /* This will be the first error handler to be called */
-      console.error("Unexpected error")
+      log.app.error("Unexpected error")
       return next(err)
     })
   }

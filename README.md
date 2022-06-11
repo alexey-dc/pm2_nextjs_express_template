@@ -1,23 +1,28 @@
 # About
-This is a basic integration of NextJS + ExpressJS.
+This is a NextJS+ExpressJS integration that relies on [PM2](https://pm2.keymetrics.io/) as the launcher, enabling (rolling) zero-downtime deploys through its cluster mode.
 
-One important reason to use a server like this is architectural simplicity - it allows maintaining only 1 deploy.
+For a more barebones and less opinionated template, which simply combines NextJS+ExpressJS - see [the original project](https://github.com/alexey-dc/nextjs_express_template), which has more information on the motivation behind the underlying setup.
 
-For a mature project, it's common to embrace a distributed setup: for example, running the front end, API, socket server, worker system - on different services. A younger project's goals are often to prove out a product idea; starting the project out as a monolith can help improve velocity and ship bug-free code - by side-stepping the complexities of [distributed systems concerns](https://aws.amazon.com/builders-library/challenges-with-distributed-systems/).
+Other than PM2, this project also pulls in [log4js](https://www.npmjs.com/package/log4js) - specifically because it's difficult to integrate logging with pm2.
 
-The code is intended to be barebones, but it does exhibit usage of the template. To actually use it as the base of a project, you probably want to delete most of the sample code:
-- Delete all pages except `main.jsx`
-- Delete the demo routes in `app/route/pages.js` and `app/route/api.js`
-- Delete`app/data`.
+Also, since proper PM2 integration involves graceful setup and teardown, this template makes an opinionated choice regarding how that should be done. Instead of a database connection, there's an in-memory datastore which pretends to need async setup. It's exposed through a namespaced global, and initialized and torn down as part of the PM2 lifecycle.
 
 There's a tutorial for this project, which can be found here https://dev.to/alexeydc/express-nextjs-sample-tutorial-integration-485f
 
+For the previous tutorial, which explains the basic NextJS+ExpressJS setup, see https://dev.to/alexeydc/express-nextjs-sample-tutorial-integration-485f
+
 # Before running
-The project relies on the `dotenv` package, so you'll need to create a `.env`. It's common to place secrets in `.env` - so it is `.gitignore`d in this project. A `.env-example` is provided with the barebones setup that does not require any secrets:
+The project relies on the `dotenv` package, so you'll need to create a `.env`. It's common to place secrets in `.env` - so it is `.gitignore`d in this project. A `.env-example` is provided with the barebones setup that does not require any secrets. It's a good starting point, so you can do:
 
 ```bash
+cp .env-example .env
+```
+
+Redundantly, here's an example of `.env` contents for this project:
+```bash
 NODE_ENV=development
-EXPRESS_PORT=3333
+DEPLOY_ENV=development
+EXPRESS_PORT=4444
 ```
 
 # Running
@@ -26,7 +31,33 @@ EXPRESS_PORT=3333
 ```bash
 # For pnpm vs yarn vs npm, see https://pnpm.io/benchmarks
 pnpm install
+# Basic startup
 pnpm start
+# For local development. Enables watch mode that automatically reloads on changes to the backend
+pnpm local
+# To see log output,
+pm2 logs pm2_nextjs_express
+```
+
+Since this project uses pm2, it can be gracefully reloaded without downtime:
+```bash
+pnpm reload
+```
+
+To shut down,
+```bash
+pnpm stop
+```
+
+There's also a debug mode, which is launched under its own pm2 name. It doesn't tear down as well, so can cause issues with relaunching and running the normal mode.
+```bash
+# Relies on the node debugger https://nodejs.org/en/docs/guides/debugging-getting-started/
+# (which is e.g. compatible with chrome://inspect - or see the doc for other options of connecting)
+pnpm debug
+# To see log output,
+pm2 logs pm2_nextjs_express_debug
+# To stop debuger
+pnpm stop_debug
 ```
 
 # HTTP vs HTTPS
@@ -39,6 +70,14 @@ https://web.dev/when-to-use-local-https
 If you just run the code as-is, it will run on HTTP, no additional changes or setup necessary.
 
 ## Localhost HTTPS
+To enable HTTPS locally, you'll need to change line 32 in `app/server.js`:
+```javascript
+// Before
+this.server = httpServer(this.express)
+// After
+this.server = httpsServer(this.express)
+```
+
 One of the easiest ways to use HTTPS locally is with mkcert. It's really simple:
 
 ```bash

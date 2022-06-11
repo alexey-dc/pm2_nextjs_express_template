@@ -1,5 +1,3 @@
-const data = require("../data/integer_memory_store.js")
-
 class Pages {
   constructor(express, next) {
     this.express = express
@@ -15,7 +13,7 @@ class Pages {
     /* With a monolith api+frontend, it's possible to serve pages with preloaded data */
     this.express.get('/preload_data', (req, res) => {
       res.pageParams = {
-        value: data.value
+        value: blib.data.value
       }
       return this.next.render(req, res, `/preload_data`)
     })
