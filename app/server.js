@@ -32,6 +32,15 @@ class Server {
     this.server = httpServer(this.express)
     this.server.listen(process.env.EXPRESS_PORT)
   }
+
+  async stop() {
+    return new Promise((resolve, reject) => {
+      this.server.close(() => {
+        log.app.info(`Server stopped.`)
+        resolve()
+      })
+    })
+  }
 }
 
 module.exports = Server

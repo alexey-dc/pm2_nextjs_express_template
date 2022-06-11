@@ -9,7 +9,7 @@ const LoadDataViaApi = (props) => {
     const json = await response.json()
     setValue(json.i)
   })
-  React.useEffect(async () => {
+  React.useEffect(() => {
     // Timeout to showcase loading state
     setTimeout(async () => {
       const response = await fetch("/api/get", {method: 'GET', });
@@ -31,7 +31,7 @@ const LoadDataViaApi = (props) => {
   }
   return <Layout>
     <h2>Data fetch after page load</h2>
-    <a target="_blank" href="https://github.com/alexey-dc/nextjs_express_template/blob/main/pages/load_data_via_api.jsx"> See page source </a>
+    <a target="_blank" href="https://github.com/alexey-dc/pm2_nextjs_express_template/blob/main/pages/load_data_via_api.jsx"> See page source </a>
     <p> This page is loaded in several steps: </p>
     <ol>
       <li>Fetch the page</li>

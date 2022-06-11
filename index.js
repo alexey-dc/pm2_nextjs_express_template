@@ -4,14 +4,14 @@ const Server = require("./app/server.js")
 /*
   blib stands for "backend lib".
 
-  One reason using a name like "lib" may not be wise, is because with a NextJS+Express setup,
+  Using a name like "lib" may not be wise with a NextJS+Express setup, since
   react code is executed on the backend - and has access to backend globals.
 
-  Thus. if there is a front end "lib" - it would cause a naming conflict, and lead to
-  unexpected behavior.
+  I.e. if there is also a front end "lib" - it would cause a naming conflict,
+  and lead to surprising behavior.
 */
 const blib = require("./app/blib/_blib.js")
-const cluster = require("cluster")
+const cluster = require("node:cluster")
 
 const begin = async () => {
   global.blib = blib
@@ -33,7 +33,7 @@ const begin = async () => {
   process.on('SIGINT', async () => {
     log.app.info("---------- Stopping ------------")
     /*
-      This is for pm2: it sends a SIGINT before doing anything else,
+      This is for pm2: it begins teardown with a SIGINT,
       which is the opportunity to finish any in-flight requests,
       clean up database connections, etc.
 
@@ -45,6 +45,7 @@ const begin = async () => {
       log.app.info("Cleanup complete. Exiting.")
       process.exit(0)
     } catch {
+      log.app.error("Sonething went wrong during shutdown")
       process.exit(1)
     }
   })
@@ -68,7 +69,8 @@ const begin = async () => {
 
   /*
     This is handy if we want to debug a live process
-    that we're connecting to from outside.
+    that we're connecting to from outside
+    (e.g. when using `pnpm debug`, see package.json/README.md).
   */
   global._server = server
   /*
