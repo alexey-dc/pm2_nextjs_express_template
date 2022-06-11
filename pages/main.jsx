@@ -23,7 +23,10 @@ export default function Main(props) {
       See <a target="_blank" href="https://dev.to/alexeydc/express-nextjs-sample-tutorial-integration-485f">this article</a> that explains the underlying NextJS+Express server structure and motivation.
     </p>
     <p>
-      This project inherits all the original functionality, including the examples below.
+      This project shares all functionality with the basic NextJS+Express article - the only difference is the way it is launched, so a production-grade zero-downtime deploy process is possible.
+    </p>
+    <p>
+      The examples below showcase some common applications of a NextJS+Express setup.
     </p>
     <div style={{marginBottom: "4vh"}}/>
     <ul className='large_li'>
