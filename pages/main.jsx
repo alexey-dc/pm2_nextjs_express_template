@@ -17,7 +17,10 @@ export default function Main(props) {
       <li> It makes an opinionated choice on launch setup for global functionality (e.g. database connections) </li>
     </ul> 
     <p>
-      See <a target="_blank" href="https://dev.to/alexeydc/express-nextjs-sample-tutorial-integration-485f">this article</a> that explains the underlying server structure and motivation.
+      I've published <a target="_blank" href="https://dev.to/alexeydc/pm2-express-nextjs-with-github-source-zero-downtime-deploys-n71">an article</a> explaining some of the features of this deployment with PM2.
+    </p>
+    <p>
+      See <a target="_blank" href="https://dev.to/alexeydc/express-nextjs-sample-tutorial-integration-485f">this article</a> that explains the underlying NextJS+Express server structure and motivation.
     </p>
     <p>
       This project inherits all the original functionality, including the examples below.
