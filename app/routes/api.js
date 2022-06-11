@@ -9,7 +9,7 @@ class Api {
     })
 
     this.express.post("/api/increment", (req, res) => {
-      data.incr()
+      blib.data.incr()
       res.send({ i: blib.data.value })
     })
   }

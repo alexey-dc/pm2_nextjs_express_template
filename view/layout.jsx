@@ -8,7 +8,7 @@ const renderBack = (backPath) => {
 export default function Layout(props) {
   return <div>
     <Head>
-      <title>NextJS+ExpressJS!</title>
+      <title>PM2+NextJS+ExpressJS</title>
       <meta name="description" content="Barebones nextjs+express setup"/>
       <meta name="keywords" content="nextjs,express"/>
       <meta name="author" content="Alexey Chernikov"/>
