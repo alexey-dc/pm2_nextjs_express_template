@@ -11,6 +11,10 @@ const Server = require("./app/server.js")
   and lead to surprising behavior.
 */
 const blib = require("./app/blib/_blib.js")
+/*
+  Node's native support for working across threads
+  https://nodejs.org/api/cluster.html#cluster
+*/
 const cluster = require("cluster")
 
 const begin = async () => {
