@@ -11,7 +11,7 @@ const Server = require("./app/server.js")
   and lead to surprising behavior.
 */
 const blib = require("./app/blib/_blib.js")
-const cluster = require("node:cluster")
+const cluster = require("cluster")
 
 const begin = async () => {
   global.blib = blib
